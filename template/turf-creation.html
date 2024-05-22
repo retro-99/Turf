@@ -1,0 +1,349 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+<style>
+  .h-100{
+    height: auto !important;
+  }
+
+ .nav-pills .nav-link.active {
+    color: #fff;
+    background-color: #59ab6e;
+}
+.nav-link{
+  color: #fff;
+  /* background-color: #13c030; */
+
+  margin-bottom: 10px;
+}
+.background{
+  background-color:  #59ab6e;
+}
+
+
+</style>
+<div class="tabs-verical m-5">
+  <div class="row">
+      <div class="col-3">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+              <a class="nav-link background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                  Turf Creation
+              </a>
+              <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                  Turf Listing
+              </a>
+          
+              
+            <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'feedback_notification' user_id=user_id %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+              Feedback
+          </a>
+     
+            
+              <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                  Change Password
+              </a>
+              <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                  Logout
+              </a>
+          </div>
+      </div>
+
+
+
+      <div class="col-9" style=" border: 2px solid black;border-radius: 10px; width: 70%;margin-left: 35px;">
+          <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+               <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+<div class="card-body p-4 p-md-5"> -->
+
+
+
+
+
+
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 360px; padding-top: 20px; ">Turf Creation</h3>
+              <form action="" method="post" id="turf-creation" enctype="multipart/form-data" >
+                {% csrf_token %}
+              <div class="container" >
+                <div class="row">
+                  <div class="col-md-12 mb-4 pb-2">
+                    <div class="form-outline">
+                      <label>Name:</label>
+                      <input type="text" id="Name" name="name" class="form-control form-control-lg" placeholder="Name" style="width: 96%;border: 1px solid #000;">
+                    </div>
+                  </div> 
+                  <div class="col-md-12 mb-4 pb-2">
+                    <label>Image:</label>
+                    <input type="file" id="image" name="image" >
+                    <img id="image-get" src="" width="200px" height="200px" style="display: none;" >
+                  </div>
+                  
+      
+                <div class="row">
+                  <div class="col-md-12 mb-4 pb-2">
+                    <div class="form-outline">
+                      <textarea id="address" class="form-control form-control-lg" name="address" rows="4" cols="50" placeholder="Enter your full address here" style="border: 1px solid #000"></textarea> 
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-12 mb-4 ">
+  
+                    <div class="form-outline ">
+                       <textarea id="description" class="form-control form-control-lg" name="description" rows="4" cols="50" placeholder="Description"style="border: 1px solid #000" required></textarea> 
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <!-- <div class="row">
+                  <div class="col-md-6 mb-4"> -->
+                      <!-- <div class="form-outline">
+                          <label for="category">Category:</label>
+                          <select id="category" name="category" class="form-control form-control-lg">
+                              <option value="">Select the category</option>
+                              {% for category in category %}
+                                  <option value="{{ category.id }}">{{ category.name }}</option>
+                              {% endfor %}
+                          </select> -->
+                      <!-- </div>
+                  </div>
+              </div> -->
+
+              <!-- <div class="col-md-12 mb-4 pb-2">
+                <label>Upload multiple images:</label>
+                
+                <input type="file" id="multi_image" name="multi_image" multiple>
+                <button>Upload</button>
+               
+              </div>
+              <hr>
+              {% for img in multimage %}
+              <img src="{{img.img.url}}">
+              {% endfor %} -->
+              <!-- <div id="image-preview-container"></div> -->
+
+              <div class="mb-3 imag">
+                <label class="label-class1">Upload multi image </label>
+                <input class="images" type="file" name="images" multiple id="multi_upload_namrce" style="width:285px;border: 1px solid #000"><br><br>
+            
+                <div class="imgview">
+            
+                
+            
+                </div>
+                <div id="del"></div>
+                <!-- <div class="multiimgvalidation" style="color: #FF0000;"></div> -->
+            
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label for="category">Category:</label>
+                          <select id="category" name="category" class="form-control form-control-lg" required style="border: 1px solid #000">
+                              <option value="">Select the category</option> 
+                              {% for category in category %}
+                                  <option value="{{ category.id }}">{{ category.name }}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+                    </div>
+                      <div class="col-md-6 mb-4">
+                          <div class="form-outline">
+                          <label for="location">Location:</label>
+                          <select id="location" name="location" class="form-control form-control-lg" required style="border: 1px solid #000">
+                              <option value="">Select a location</option>
+                              {% for locations in locations %}
+                                  <option value="{{ locations.id }}">{{ locations.name }}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="col-md-12 mb-4">
+                  <div class="form-outline">
+                    <label>Amount:</label>
+                      <input type="text" id="Amount" name="amount" class="form-control form-control-lg" placeholder="Amount" style="border: 1px solid #000" required/>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-12 mb-4 pb-2">
+                    <label>Upload Advertisement Image:</label>
+                    <input id="advertisement_image" type="file"  name="addimage" >
+                    <img id="addimg" src="" width="200px" height="200px" style="display: none;" >
+  
+                  </div>
+              </div>
+              
+ 
+                <div class="mt-4 pt-2">
+                  
+                  <input class="btn btn-primary btn-lg" type="submit" id="register" value="Submit" style="margin-left: 250px;width: 100%;margin-left: -5px;"/>
+                </div>
+              </form>
+              <div id="ok"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+ 
+  {% csrf_token %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+
+$(document).ready(function() {
+    $('#turf-creation').submit(function(event) {
+        event.preventDefault();
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        var formData = new FormData(this);
+        formData.append("csrfmiddlewaretoken", csrfToken);
+
+        $.ajax({
+            type: 'POST',
+            url: '/turf_creation/',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#ok').text('Turf added');
+                window.location.href = '/myprofile/';
+            },
+            error: function(response) {
+                $('#ok').text('Failed to add turf');
+            }
+        });
+    });
+
+    $(document).on('click', '.delbtnnewsfeedmutliple', function(event) {
+        event.preventDefault();
+        var imageId = $(this).closest('.imag').data('image-id');
+
+        // AJAX request to delete image
+        $.ajax({
+            type: 'POST',
+            url: '/delete_uploaded_image/',  // Your Django URL for image deletion
+            data: { 'image_id': imageId, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+            success: function(data) {
+                if (data.success) {
+                    $('div[data-image-id="' + imageId + '"]').remove();
+                    $('#del').text('Image removed successfully');
+                } else {
+                    $('#del').text('Failed to delete image');
+                }
+            },
+            error: function(error) {
+                console.log('Error:', error);
+                $('#del').text('An error occurred while deleting the image');
+            }
+        });
+    });
+
+    // Move the image upload logic to the form submission event
+    $('#multi_upload_namrce').on('change', function (event) {
+        event.preventDefault();
+        var fileInput = $(this);
+        var files = fileInput[0].files;
+
+        $('#loaderimg').show();
+        var fd = new FormData();
+
+        $.each(files, function (i, file) {
+            fd.append('img', file);
+        });
+
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        fd.append('csrfmiddlewaretoken', csrfToken);
+
+        $.ajax({
+            url: '/upload_image/',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // If it's the first image in the row, add a new row div
+                if ($('.imgview .row').length === 0 || $('.imgview .row:last-child').children().length === 3) {
+                    $('.imgview').append('<div class="row mb-3"></div>');
+                }
+
+                // Append image HTML to the last row div
+                $('.imgview .row:last-child').append(
+                    "<div class='col-md-4 imag' data-image-id='" + data.image_id + "'>" +
+                    "<img width='200px' height='150px' class='imgsize' src='" + data.url + "' />" +
+                    "<input type='hidden' name='newsfeedsmultipleimg[]' value='" + data.name + "' id='hidden_image' />" +
+                    "<button class='delbtnnewsfeedmutliple' style='margin-top: 10px;' >close</button></div>"
+                );
+
+                $('#loaderimg').hide();
+            },
+        });
+    });
+
+    $('#image').on('change', function () {
+        var input = this;
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            // Update the preview image src attribute
+            $('#image-get').attr('src', e.target.result).show();;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+      $('#advertisement_image').on('change', function () {
+        var input = this;
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            // Update the preview image src attribute
+            $('#addimg').attr('src', e.target.result).show();;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      });
+    
+    });
+
+    </script>
+    
+  <style>
+
+    /* .gradient-custom { */
+/* fallback for old browsers */
+/* background: #f093fb; */
+
+/* Chrome 10-25, Safari 5.1-6 */
+/* background: -webkit-linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1)); */
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/* background: linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1)) */
+/* } */
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+font-size: 1rem;
+line-height: 2.15;
+padding-left: .75em;
+padding-right: .75em;
+}
+.card-registration .select-arrow {
+top: 10px;
+}
+  </style>
+{% endblock %}

@@ -1,0 +1,133 @@
+<!-- rating.html -->
+
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block body_block %} 
+    <style>
+        /* Move styles to an external CSS file and link it here */
+        /* ... */
+
+        .stars-container {
+            font-size: 80px;
+        }
+        #ratingForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid black; /* Blue */
+            width: 500px;
+            margin-left: 580px;
+        }
+        img {
+            width: 100%;
+            height: 250px;
+        }
+    
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+    
+        .stars {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+    
+        .star {
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.3s;
+            margin: 0 10px; /* Increased margin for better spacing */
+            font-size: 80px; /* Increased font-size for larger stars */
+        }
+    
+        .star.active,
+        .star:hover {
+            color: #ffcc00;
+        }
+    
+        p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+    
+        button {
+            background-color: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+    
+        button:hover {
+            background-color: #ffdb4d;
+        }
+    
+    </style>
+
+    <div id="ratingForm" style="margin-top: 40px;">
+        <form method="post" action="{{ saverating_url }}">
+            {% csrf_token %}
+            <img src="{{ turf.img.url }}" alt="{{ turf.name }} Image" />
+
+            <div class="rating-form">
+                <h1>Rate Us</h1>
+                <div class="stars" id="starsContainer" class="stars-container">
+                    <span class="star" data-rating="1">&#9733;</span>
+                    <span class="star" data-rating="2">&#9733;</span>
+                    <span class="star" data-rating="3">&#9733;</span>
+                    <span class="star" data-rating="4">&#9733;</span>
+                    <span class="star" data-rating="5">&#9733;</span>
+                </div>
+                <p >Your Rating: <span id="selected-rating" style="font-size: 20px;">0</span></p>
+                <input type="hidden" name="property_rating" id="property_rating" value="0">
+                <button type="submit">Submit Rating</button>
+            </div>
+        </form>
+    </div>
+<br>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const starsContainer = document.getElementById("starsContainer");
+            const ratingDisplay = document.getElementById("selected-rating");
+            const ratingForm = document.getElementById("ratingForm");
+            const hiddenRatingInput = document.getElementById("property_rating");
+
+            // Event delegation for star ratings
+            starsContainer.addEventListener("click", (event) => {
+                const star = event.target.closest(".star");
+                if (star) {
+                    const selectedRating = parseInt(star.getAttribute("data-rating"));
+
+                    // Update the hidden input value
+                    hiddenRatingInput.value = selectedRating;
+
+                    // Update the rating display
+                    ratingDisplay.textContent = selectedRating;
+
+                    // Add the 'active' class to style selected stars
+                    starsContainer.querySelectorAll(".star").forEach((s) => {
+                        const rating = parseInt(s.getAttribute("data-rating"));
+                        s.classList.toggle("active", rating <= selectedRating);
+                    });
+                }
+            });
+
+            // Event listener for form submission
+            ratingForm.addEventListener("submit", (e) => {
+                if (hiddenRatingInput.value === "0") {
+                    alert("Please select a rating.");
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock %}

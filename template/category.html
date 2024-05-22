@@ -1,0 +1,418 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+<style>
+    
+  
+    
+    .star {
+        color: #FFD700; /* Gold color for stars */
+        margin-right: 3px; /* Add some space between stars */
+    }
+    
+    /* User Count Styles */
+    .user-count {
+        font-size: 16px; /* Increase font size */
+        color: #555; /* Darker gray color for user count */
+        margin-left: 8px; /* Add some space between stars and user count */
+    }
+    
+  
+    .feedback-button:hover {
+        background-color: #E64A2E; /* Darker shade on hover */
+    }
+  
+    
+
+    .shop-grid__item {
+        margin-bottom: 20px;
+        border: 2px solid black;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.2s;
+        width: 300px;
+        height: 350px;
+        
+
+
+    }
+    .star {
+        font-size: 40px; /* Adjust the font size to increase the width of the star */
+        color: #ffcc00;
+    }
+
+    
+    .shop-grid__item:hover {
+        transform: scale(1.03);
+    }
+
+    .turf-image {
+        width: 100%;
+        
+        margin-bottom: 50px; /* Add margin-bottom to create space between images */
+
+        height: 50%;
+    }
+
+    .shop-grid_item_text {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+
+    .d-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .overall-rating {
+        margin-top: 10px;
+    }
+
+    .turf-grid-item {
+        text-align: center;
+    }
+    .sidebar {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .turf-grid-item {
+        text-align: center;
+        width: 33.33%; /* Set to occupy 33.33% of the container's width */
+        box-sizing: border-box; /* Include padding and border in the total width */
+        padding: 0 10px; /* Optional: Add some space between grid items */
+    }
+    
+   
+    /* Optional: Adjust for even smaller screens */
+    @media (max-width: 480px) {
+        .turf-grid-item {
+            width: 100%; /* Display one item per row for smaller screens */
+        }
+    }
+   .overall-rating {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .stars {
+        font-size: 18px;
+        color: #ffcc00;
+    }
+
+    .user-count {
+        font-size: 14px;
+        color: #555;
+        margin-left: 5px;
+    }
+
+
+/* Example Category List Styling */
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-list li {
+    margin-bottom: 10px;
+}
+
+.category-list li a {
+    display: block;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.category-list li a:hover {
+    background-color: #ddd;
+}
+/* Increase the outer border of the sidebar */
+.sidebar {
+    padding: 15px;
+    border: 3px solid black; /* Increase border width to 3px (adjust color as needed) */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 230px;
+}
+
+  
+   
+.stars {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    font-size: 24px;
+    color: #FFD700; /* Gold color for stars */
+    margin-right: 3px; /* Add some space between stars */
+}
+
+/* User Count Styles */
+.user-count {
+    font-size: 14px;
+    color: #777; /* Darker gray color for user count */
+    margin-left: 8px; /* Add some space between stars and user count */
+}
+
+/* Stylish Button Styles */
+
+.feedback-button:hover {
+    background-color: #E64A2E; /* Darker shade on hover */
+}
+
+/* Optional: Adjust the star size and color based on your preference */
+.stars {
+    font-size: 20px;
+    color: #FFD700; /* Gold color for stars */
+}  
+</style>
+
+<section class="bg-light">
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+
+            <div class="col-md-6 offset-md-3">
+                <div class="input-group">
+                    <input type="text" id="searchInput" name="search" class="form-control" placeholder="search your turf or location">
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-primary search" id="searchButton">Search</button>
+                </div>
+            </div>
+        </div>
+
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar with Categories -->
+        <div class="col-lg-2">
+            <div class="sidebar">
+                <h3>Categories</h3>
+                <ul class="list-unstyled templatemo-accordion">
+                    <ul class="category-list">
+                        <li><a href="{% url 'turf'  %}">ALL</a></li>
+
+                        {% for obj in turf_category %}
+                        <li>
+                            <a href="{% url 'display_category' obj.id %}">{{ obj.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        
+
+            <div class="col-lg-9" style="margin-left:60px;">
+                <div class="row categorylist">
+                    {% csrf_token %}
+                    {% for turf in turfs_in_category %}                        
+                    <div class="col-lg-3 col-md-4 col-sm-6 turf-grid-item">
+                            <div class="shop-grid__item">
+                                <div class="shop-grid_item_pic">
+                                    <a href="{% url 'turf_singlepage' turf_id=turf.id %}">
+                                        <img src="{{ turf.img.url }}" alt="{{ turf.name }}" class="turf-image">
+                                    </a>
+                                </div>
+                                <div class="shop-grid_item_text">
+                                    <h5 style="font-size:16px;margin-top:-50px;">{{ turf.name }}</h5>
+                                    <h5 style="font-size:16px;">{{ turf.location }}</h5>
+                                    <div class="overall-rating" data-turf-id="{{ turf.id }}" style="margin-right: 30px;"></div>
+
+                                    {% if roll == 'owner' or roll == 'user' %}
+                                    <a href="{% url 'feedback' turf.id %}">
+                                        <input type="button" class="btn btn-primary btn-block mb-4 feedback-button" id="feedback" value="Feedback" style="width:100px">
+                                    </a>
+                                    
+                                    <a href="{% url 'turf_booking' turf.id %}">
+                                        <input type="button" class="btn btn-primary btn-block mb-4" id="booking" value="Book Now" style="background-color: #59ab6e; border-color: #56ae6c;">
+                                    </a>
+                                {% endif %}
+                                
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="no-results-message" class="col-12 text-center" style="display: none;">
+                </div>
+                
+
+                <div id="carousel-related-product" class="row turf_category_list " >
+                    
+                </div>
+
+                <div id="carousel-related-product" class="row turf_search_list " >
+                    
+                </div>
+                <div id="search-results-message" class="col-12 text-center" style="color:red;"></div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+        $('.search').on('click', function (event) {
+            event.preventDefault();
+            $('.turf_search_list').show();
+            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var keyword = $('#searchInput').val();  // Change ID to searchInput
+    
+            var data = {
+                keyword: keyword,
+                csrfmiddlewaretoken: csrfToken
+            };
+        $.ajax({
+            url: '/search_turf/',
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                console.log(data);  // Add this line
+                $('.turf_category_list').hide();
+                $('.categorylist').hide();
+                var result = data.turflist;
+                var append_result = '';
+
+                // Clear any existing message
+                $('#search-results-message').html('');
+
+                if (result.length === 0) {
+                    // Display a message when no search results are found
+                    $('#search-results-message').html('<p>No search results found</p>');
+                } else {
+                    // Loop through the result using jQuery.each
+                    $.each(result, function (index, obj) {
+                        // Your existing result item rendering code
+                        append_result += '<div class="col-lg-3 col-md-4 col-sm-6 turf-grid-item">';
+                        append_result += '<div class="shop-grid__item">';
+                        append_result += '<div class="shop-grid_item_pic">';
+                        append_result += '<a href="/turf-singlepage/' + obj.turf_id + '/">';
+                        append_result += '<img src="' + obj.image + '" alt="' + obj.name + '" class="turf-image">';
+                        append_result += '</a>';
+                        append_result += '</div>';
+                        append_result += '<div class="shop-grid_item_text">';
+                        append_result += '<h5 style="font-size:16px;margin-top:-50px;">' + obj.name + '</h5>';
+                        append_result += '<h5 style="font-size:16px;">' + obj.location + '</h5>';
+
+                        // Include the buttons and overall rating
+                        append_result += '<div class="overall-rating" data-turf-id="' + obj.turf_id + '"></div>';
+                        append_result += ` {% if roll == 'owner' or roll == 'user' %}`;
+                 
+                        append_result += '<a href="/feedback/' + obj.turf_id + '/">';
+                        append_result += '<input type="button" class="btn btn-primary btn-block mb-4 feedback-button" id="feedback" value="Feedback" style="width:100px">';
+                        append_result += '</a>';
+                        append_result += '<a href="/turf_booking/' + obj.turf_id + '/">';
+                        append_result += '<input type="button" class="btn btn-primary btn-block mb-4" id="booking" value="Book Now" style="background-color: #59ab6e; border-color: #56ae6c;">';
+                        append_result += '</a>';
+                        append_result +=`{% endif %}`
+                        // Include the overall rating display
+                        append_result += '</div>';
+                        append_result += '</div>';
+                        append_result += '</div>';
+                    });
+                }
+
+                // Display the search results
+                $('.turf_search_list').html(append_result);
+
+                // Call the function to update ratings for search results
+                updateRatingsForSearchResults();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+    // Add this function to update the overall rating for each turf in the search results
+    function updateRatingsForSearchResults() {
+        $('.turf_search_list .overall-rating').each(function () {
+            var turfId = $(this).data('turf-id');
+            updateOverallRating(turfId);
+        });
+    }
+
+    // Add this function to fetch and update overall rating and user count
+    function updateOverallRating(turfId) {
+        $.ajax({
+            type: 'GET',
+            url: '/get_overall_rating/',
+            data: {
+                'turfId': turfId,
+            },
+            success: function (data) {
+                // Convert rating to stars HTML
+                var starsHtml = getStarsHtml(data.overallRating);
+    
+                // Display the stars
+                $('.overall-rating[data-turf-id="' + turfId + '"]').html('<div class="stars">' + starsHtml + '</div>');
+
+                // Display the user count in green color
+                var userCountHtml = '<div class="user-count" style="color: red; font-size:1px;">' + data.userCount + ' users</div>';
+                $('.overall-rating[data-turf-id="' + turfId + '"]').append(userCountHtml);
+            },
+            error: function (error) {
+                console.log('Error fetching overall rating:', error);
+            }
+        });
+    }
+    
+
+    // Add this function to convert rating to stars HTML
+    function getStarsHtml(rating) {
+        var starsHtml = '';
+        var roundedRating = Math.round(rating);
+        for (var i = 0; i < 5; i++) {
+            if (i < roundedRating) {
+                starsHtml += '<span class="star active" style="color: #ffcc00;">&#9733;</span>'; // Yellow color for filled star
+            } else {
+                starsHtml += '<span class="star" style="color: #ffcc00;">&#9734;</span>'; // Yellow color for empty star
+            }
+        }
+        return starsHtml;
+    }
+
+    // Call the function to update the overall rating for each turf
+    $('.overall-rating').each(function () {
+        var turfId = $(this).data('turf-id');
+        updateOverallRating(turfId);
+    });
+</script>
+
+{% endblock %}

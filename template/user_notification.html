@@ -1,0 +1,236 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+<style>
+    .h-100{
+      height: auto !important;
+    }
+  
+   .nav-pills .nav-link.active {
+      color: #fff;
+      background-color: #0b831f;
+  }
+  .nav-link{
+    color: #fff;
+    /* background-color: #13c030; */
+  
+    margin-bottom: 10px;
+  }
+  .background{
+    background-color: #59ab6e;
+  }
+  .row {
+        
+       
+        padding: 10px 0;
+    }
+
+    /* Optional: Style for the cancel button */
+    .cancel-button {
+        background-color: #da0606;
+        color: #ffffff;
+    }
+  
+  </style>
+
+<!-- <div class="tabs-verical m-5"> -->
+    <div class="row" style="margin-left: 20px;">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+                {% if roll == 'owner' %}
+                <a class="nav-link active background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                    Turf Creation
+                </a>
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Turf Listing
+                </a>
+               
+              <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                Owner Notification
+            </a>
+            {% endif %}
+            
+        <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'user_notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+            Booking details
+        </a>
+            
+           
+                <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                    Change Password
+                </a>
+                <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="{% url 'logout' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                    Logout
+                </a>
+            </div>
+        </div>
+        <div class="col-9">
+            <!-- <div class="tab-content" id="v-pills-tabContent"> -->
+                <!-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"> -->
+                 <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+    <div class="card-body p-4 p-md-5"> -->
+    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 350px; padding-top: 30px;">Turf Booking Details </h3> 
+    {% if bookings %}
+    <div class="maindiv" style="margin-left: 20px;">
+        <div class="row">
+            {% csrf_token %}
+            <div class="col-md-2">
+                <strong>Turf Name </strong>
+            </div>
+        
+            <div class="col-md-3">
+                <strong>Address</strong>
+            </div>
+        
+            <div class="col-md-1">
+                <strong>No. of players</strong>
+            </div>
+            <div class="col-md-2">
+                <strong>Slot</strong>
+            </div>
+            <div class="col-md-1">
+                <strong> Date </strong>
+            </div>
+        
+            <div class="col-md-1">
+                
+            </div>
+        </div>
+        <hr>
+        <div class="row booking">
+            {% for booking in bookings %}
+                <div class="col-md-2">
+                    {{ booking.turf.name }}
+                </div>
+            
+                <div class="col-md-3">
+                    {{ booking.turf.address }}
+                </div>
+            
+                <div class="col-md-1">
+                    {{ booking.no_of_players }}
+                </div>
+            
+                <div class="col-md-2">
+                    {{ booking.slot.name }}
+                </div>
+                <div class="col-md-2">
+                    {{ booking.date }}
+                </div>
+                
+                <div class="col-md-2 sucess_msg">
+                    {% if booking.booking_status == 1 %}
+                        <a href="" class="cancel-link" data-booking-id="{{ booking.id }}">
+                            <input type="button" class="cancel-button" data-booking-id="{{ booking.id }}" value="Cancel" style="background-color: #da0606; color: #ffffff; border: none;">
+                        </a>
+                    {% else %} 
+                        <div class="cancellation-message-container" style="margin-top: 10px;">Booking canceled successfully.</div>
+                    {% endif %}
+                    <div class="cancellation-message-container" style="margin-top: 10px;"></div>
+                </div>
+
+                <hr>
+            {% endfor %}
+        </div>
+        <br><br>
+    </div>
+{% else %}
+<div class="col-md-12 text-center">
+    <p>No bookings available.</p>
+</div>
+{% endif %}
+
+</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.cancel-button').on('click', function(event) {
+            event.preventDefault();
+              var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var bookingId = $(this).data('booking-id');
+            var cancellationMessageContainer =$(this).closest('.sucess_msg').find('.cancellation-message-container'); 
+            var this_=$(this);
+			var data={
+                bookingId: bookingId,
+                csrfmiddlewaretoken: csrfToken
+            }
+            // Make an AJAX request to your cancel_booking view
+            $.ajax({
+                type: 'POST', // or 'POST' based on your view
+                url: '/cancel_booking/', // Update the URL to your actual cancel_booking URL
+				data : data,
+                success: function(response) {
+                    // Update the content of the cancellation message container
+					if(response.status=="success"){
+					
+                     cancellationMessageContainer.text(response.message);
+
+					this_.closest('.row').find('[data-booking-id="' + bookingId + '"] .cancel-button').remove();
+					
+					}
+					
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function() {
+        // Add an event listener to all elements with the class 'cancel-button'
+        $('.cancel-button').on('click', function() {
+            var bookingId = $(this).data('booking-id');
+            var bookingDetails = $(this).closest('.booking-details');
+
+            $.ajax({
+                type: 'POST',
+                url: '/cancel_booking/' + bookingId + '/',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+
+                    // Display a success message on the page
+                    displaySuccessMessage('Booking successfully canceled!');
+
+                    // Remove the canceled booking details from the frontend
+                    // booking.remove();
+                    $("this").closest(".maindiv").find(".booking-details");
+                },
+                error: function(error) {
+                    // Handle error response
+                    console.log(error);
+                }
+            });
+        });
+
+        // Function to display a success message in a text element
+        function displaySuccessMessage(message) {
+            // You can customize this part based on how you want to display the message
+            $('.cancellbookingsuccessmsg').text(message);
+
+            // Optionally, you can fade out the success message after a few seconds
+            setTimeout(function() {
+                $('.cancellbookingsuccessmsg').fadeOut('slow', function() {
+                    $(this).text(''); // Clear the text after fading out
+                });
+            }, 3000); // 3000 milliseconds (3 seconds)
+        }
+    });
+</script>
+
+
+
+{% endblock %}         -->

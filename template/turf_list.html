@@ -1,0 +1,191 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+<style>
+    .h-100{
+      height: auto !important;
+    }
+  
+   .nav-pills .nav-link.active {
+      color: #fff;
+      background-color:  #59ab6e;
+  }
+  .nav-link{
+    color: #fff;
+    /* background-color: #13c030; */
+  
+    margin-bottom: 10px;
+  }
+  .background{
+    background-color:  #59ab6e;
+  }
+  
+  </style>
+<!-- <div class="tabs-verical m-5"> -->
+    <div class="row" style="margin-left: 20px;">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+                <a class="nav-link background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                    Turf Creation
+                </a>
+                
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Turf Listing
+                </a>
+               
+              
+            <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'feedback_notification' user_id=user_id %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                Feedback
+            </a>
+                <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                    Change Password
+                </a>
+                <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="{% url 'logout' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                    Logout
+                </a>
+            </div>
+        </div>
+    
+
+      <div class="col-9">
+        <!-- <div class="tab-content" id="v-pills-tabContent"> -->
+            <!-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"> -->
+             <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+<div class="card-body p-4 p-md-5"> -->
+
+
+    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 400px; padding-top: 30px;">Turf List </h3> 
+    <div class="" style="margin-left: 20px;">
+        {% for obj in turf_list %}
+        <div class="row">
+           
+            <div class="col-md-3 mb-4">
+                {% if obj.img %}
+                    <img src="{{ obj.img.url }}" style="width: 50%; height: 130px;">
+                {% endif %}
+            </div>
+    
+            <div class="col-md-3">
+                <div>
+                    <b>{{ obj.name }}</b>
+                </div>
+                <div>
+                    {{ obj.address }}
+                </div>
+            </div>
+    
+            <div class="col-md-3">
+                <input type="hidden" name="tid[]" value="{{ obj.id }}">
+                <a href="{% url 'view_bookings' obj.id %}">
+                    <button class="view_bookings_btn btn btn-primary" style="border: none; cursor: pointer;">View Bookings</button>
+                </a><br>
+                {% for index in idk %}
+                    {% if obj.id == index %}
+                        <p class="bookingCount">Number of Bookings: 
+                            {% for item in idt %}
+                                {% if forloop.counter0 == forloop.parentloop.counter0 %}
+                                    {{ item }}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+    
+            <div class="col-md-1">
+                <a href="{% url 'turflist_edit' obj.id %}">
+                    <button class="edit-turf-btn btn btn-success" style="border: none; cursor: pointer;">Edit</button>
+                </a>
+            </div>
+            
+            <div class="col-md-1">
+                {% csrf_token %}
+                <a href="" data-turf-id="{{ obj.id }}">
+                   <input type="hidden" value="{{ obj.id }}" name="hidden_turf_id" class="hidden_turf_id">
+                    <button class="delete-turf-btn btn btn-danger" style="border: none; cursor: pointer;">Delete</button>
+                </a>
+            </div>
+            <hr>
+        
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    
+      
+    $('.delete-turf-btn').on('click', function(event) {
+        event.preventDefault();
+
+          var deleteButton = $(this);
+          var turfId = deleteButton.closest('.row').find('.hidden_turf_id').val();
+          var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+          console.log(turfId);
+          var data={
+                    turf_id: turfId,
+                    csrfmiddlewaretoken: csrfToken
+            }
+  
+          // Confirm with the user before proceeding
+         
+              $.ajax({
+                  type: 'POST',
+                  url: '/delete_turf/',
+                  data:data,
+                  // success: function(response) {
+                  //     // Handle success, e.g., remove the deleted turf from the UI
+                  //     console.log(response);
+                  // },
+                  success: function(response) {
+                       // Handle success, e.g., remove the deleted turf from the UI
+                       console.log(response);
+                       deleteButton.closest('.row').remove();
+                     
+                         // Assuming each turf has a unique ID
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+          
+      });
+  });
+  function getCSRFToken() {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith('csrftoken=')) {
+            return cookie.substring('csrftoken='.length, cookie.length);
+        }
+    }
+    return null;
+}
+$(document).ready(function() {
+    var csrfToken = getCSRFToken(); // Get CSRF token using the function
+
+    var turf_ids = $('[name="tid[]"]').map(function() {
+        return this.value;
+    }).get();
+
+    $.ajax({
+        url: '/turf_list/',
+        type: 'POST',
+        headers: { "X-CSRFToken": csrfToken }, // Include CSRF token in headers
+        data: { turf_ids: turf_ids },
+        success: function (data) {
+            console.log('Success:', data);
+            // Handle the response data here
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+});
+  </script>
+{% endblock %} 

@@ -1,0 +1,116 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+<style>
+    .h-100{
+      height: auto !important;
+    }
+  
+   .nav-pills .nav-link.active {
+      color: #fff;
+      background-color: #0b831f;
+  }
+  .nav-link{
+    color: #fff;
+    /* background-color: #13c030; */
+  
+    margin-bottom: 10px;
+  }
+  .background{
+    background-color: #0b831f;
+  }
+  
+  </style>
+<!-- 
+<div class="tabs-verical m-5"> -->
+    <div class="row" style="margin-left: 20px;">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+                <a class="nav-link active background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                    Turf Creation
+                </a>
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Turf Listing
+                </a>
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                  Notification
+              </a>
+              <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'user_notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                User Notification
+            </a>
+                <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                    Change Password
+                </a>
+                <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                    Logout
+                </a>
+            </div>
+        </div>
+  
+
+        <div class="col-9">
+            <!-- <div class="tab-content" id="v-pills-tabContent"> -->
+                <!-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"> -->
+                 <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+    <div class="card-body p-4 p-md-5"> -->
+    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 350px; padding-top: 30px;">Turf Booking Details </h3> 
+    <div class="" style="margin-left: 100px;">
+    <div class="row">
+     
+        <div class="col-md-2">
+        <strong>Name </strong>
+        </div>
+    
+        <div class="col-md-2">
+        <strong>Address</strong>
+        </div>
+    
+        <div class="col-md-2">
+            <strong>Image</strong>
+        </div>
+    
+        <div class="col-md-2">
+            <strong>Location</strong>
+        </div>
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-2">
+            
+        </div>
+    </div>
+
+  <div class="row">
+    {% for turf in user_turfs %} 
+    <div class="col-md-2">
+        {{turf.name}}
+    </div>
+
+    <div class="col-md-2">
+        {{turf.address}}
+    </div>
+
+    <div class="col-md-2">
+        <img src="{{ turf.img.url }}" alt="Profile Image" style="width: 60px;">
+    </div>
+
+    <div class="col-md-2">
+       {{turf.location}}
+    </div>
+    <div class="col-md-2">
+        <a href=""><input type="button" class="btn btn-primary btn-block mb-4" name="booking_id" id="cancel-booking-btn" data-booking-id="{{ booking.id }}" value="Delete" style="background-color:hsl(0,60%,49%);;border-color:  #434443; width: 60%;"> </a>
+    </div>
+    <div class="col-md-2">
+       
+    </div>
+    {% endfor %}
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

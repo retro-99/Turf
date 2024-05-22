@@ -1,0 +1,387 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+<style>
+  .h-100{
+    height: auto !important;
+  }
+
+ .nav-pills .nav-link.active {
+    color: #fff;
+    background-color: #59ab6e;
+}
+.nav-link{
+  color: #fff;
+  /* background-color: #13c030; */
+
+  margin-bottom: 10px;
+}
+.background{
+  background-color:#59ab6e;
+}
+
+
+</style>
+<div class="tabs-verical m-5">
+  <div class="row">
+      <div class="col-3">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+              <a class="nav-link background active py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                  Turf Creation
+              </a>
+              <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                  Turf Listing
+              </a>
+              <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                Notification
+            </a>
+              <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                  Change Password
+              </a>
+              <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                  Logout
+              </a>
+          </div>
+      </div>
+
+
+
+      <div class="col-9" style="border: 2px solid #ccc;border-radius: 10px;">
+          <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+               <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+<div class="card-body p-4 p-md-5"> -->
+
+
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 400px;padding-top: 20px; ">Turf Edit</h3>
+              <form  method="post"  enctype="multipart/form-data" id="turfedit-form">
+                {% csrf_token %}
+              <!-- Name Field -->
+<div class="col-md-12 mb-4 pb-2">
+  <div class="form-outline">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Name" value="{{ turf.name }}" style="width: 96%;" />
+      <input type="hidden" name="turfid" id="turf_id" value="{{turf.id}}">
+  </div>
+</div>
+
+<!-- Image Field -->
+<div class="col-md-12 mb-4 pb-2">
+  <label for="image">Image:</label>
+  <input type="file" id="trfimage" name="turf_image">
+  {% if turf.img %}
+  <img id="turfimage-preview" src="{{ turf.img.url }}" alt="Current Image" style="width: 30%; height: 150px;">
+  {% endif %}
+</div>
+
+<!-- Address Field -->
+<div class="row">
+  <div class="col-md-12 mb-4 pb-2">
+      <div class="form-outline">
+          <label for="address">Address:</label>
+          <textarea id="address" class="form-control form-control-lg" name="address" rows="4" cols="50" placeholder="Enter your full address here" required>{{ turf.address }}</textarea>
+      </div>
+  </div>
+</div>
+
+<!-- Description Field -->
+<div class="row">
+  <div class="col-md-12 mb-4">
+      <div class="form-outline">
+          <label for="description">Description:</label>
+          <textarea id="description" class="form-control form-control-lg" name="description" rows="4" cols="50" value="{{ turf.description }}" placeholder="Description" required>{{ turf.description }}</textarea>
+      </div>
+  </div>
+</div>
+<!-- <div class="mb-3 imag">
+  <label class="label-class1">Upload multi image </label>
+  <input class="images" type="file" name="images" multiple id="multi_upload_namrce" style="width: 285px;"><br> -->
+  <div class="mb-3 imag d-flex flex-wrap">
+    <label class="label-class1">Upload multi image</label>
+    <input class="images" type="file" name="images" multiple id="multi_upload_namrce" style="width: 285px;"><br>
+    <input type='hidden' name='hidden_images' value="{{ turf_value.id }}" class='hidden_image_id'  />
+
+  <div class="imgview">
+
+
+    </div>
+    {% for mul_img in multi_images %}
+    <div class="col-md-6" data-image-id="{{ mul_img.id }}">
+    <!-- <i class='fa fa-remove'></i> -->
+    <div class="img-container" style="margin-bottom: 10px; ">
+      {% if mul_img.img %}
+        <img width="200px" class="imgsize" src="{{ mul_img.img.url }}" />
+        {% endif %}
+        <button class='delbtnnewsfeedmutliple'>
+          delete
+          </button>
+      </div>
+      </div>
+    {% endfor %}
+</div>
+  <!-- <div class="multiimgvalidation" style="color: #FF0000;"></div> -->
+
+</div>
+<!-- Category Field -->
+<div class="row">
+  <div class="col-md-6 mb-4">
+      <div class="form-outline">
+          <label for="category">Category:</label>
+          <select id="category" name="category" class="form-control form-control-lg">
+              <option >Select the category</option>
+              {% for category_item in category %}
+                  <option value="{{ category_item.id }}" {% if category_item.id == turf.turfcategory_id %}selected{% endif %}>{{ category_item.name }}</option>
+              {% endfor %}
+          </select>
+      </div>
+  </div>
+  <!-- Other Fields... -->
+</div>
+
+<!-- Location Field -->
+<div class="row">
+  <div class="col-md-6 mb-4">
+      <div class="form-outline">
+          <label for="location">Location:</label>
+          <select id="location" name="location" class="form-control form-control-lg">
+              <option value="">Select a location</option>
+              {% for location_item in locations %}
+                  <option value="{{ location_item.id }}" {% if location_item.id == turf.location_id %}selected{% endif %}>{{ location_item.name }}</option>
+              {% endfor %}
+          </select>
+      </div>
+  </div>
+  <!-- Other Fields... -->
+</div>
+
+<!-- Amount Field -->
+<div class="col-md-6 mb-4">
+            <div class="form-outline">
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" name="amount" class="form-control form-control-lg" placeholder="Amount" value="{{ turf.amount }}" />
+            </div>
+          </div>
+
+          <!-- Advertisement Image Field -->
+          <div class="col-md-12 mb-4 pb-2">
+            <label for="advertisement_image">Upload Advertisement Image:</label>
+            <input id="advertisement_image" type="file"  name="advertisement_image">
+            {% if  turf.advertisement_image %}
+            <img id="advertisement-preview" src="{{ turf.advertisement_image.url }}" alt="Current Advertisement Image" style="width: 30%;height: 150px;">
+            {% endif %}
+          </div>
+  <input type="hidden" id="turfid" name="turfid" value="{{turf.id}}">
+
+                <div class="mt-4 pt-2">
+                  
+                  <input class="btn btn-primary btn-lg" type="submit" id="submit" value="Submit" style="margin-left: 250px;width: 100%;margin-left: -5px;"/>
+                </div>
+                <br>
+                <div id="posted"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var imagesToUpload = []; 
+
+$(document).ready(function () {
+$(document).on('change', '#multi_upload_namrce', function (event) {
+    event.preventDefault();
+
+    var fileInput = $(this)[0];
+    var files = fileInput.files;
+
+    $.each(files, function (i, file) {
+        imagesToUpload.push(file);
+    });
+});
+
+$('#turfedit-form').on('submit', function (event) {
+    event.preventDefault();
+
+    var turf_id = $('[name="turfid"]').val(); 
+    var formData = new FormData(this); // Capture form data including CSRF token
+
+    // Append additional data
+    formData.append('turf_id', turf_id);
+
+    $.ajax({
+        url: '/editupload_image/',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            console.log('Images uploaded successfully');
+            imagesToUpload = [];
+            // Redirect or perform actions after successful upload
+        },
+        error: function (error) {
+            console.error('Error uploading images:', error);
+        }
+    });
+});
+});
+$('#turfedit-form').on('submit', function (event) {
+    event.preventDefault();
+
+    var turf_id = $('[name="turfid"]').val(); 
+    var formData = new FormData(this); 
+
+    $.each(imagesToUpload, function (i, file) {
+        formData.append('newsfeedsmultipleimg[]', file);
+    });
+
+    $.ajax({
+        url: '/turflist_edit_save/', // Update with your Django view URL for Turf edit save
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#posted').text('Turf details updated successfully');
+            setTimeout(function() {
+                        $('#posted').text("");
+                        }, 2000);
+        },
+        error: function (error) {
+          $('#posted').text('Error updating Turf details:', error);
+        }
+    });
+});
+$(document).ready(function () {
+ $(document).on('change', '#multi_upload_namrce', function (event) {
+    event.preventDefault();
+
+    var fileInput = $(this)[0];
+    var files = fileInput.files;
+
+    for (var i = 0; i < files.length; i++) {
+        (function (index) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.imgview').append("<div class='mb-3 imag'><img width='200px' height='150px' class='imgsize' src='" + e.target.result + "' /><input type='hidden' name='newsfeedsmultipleimg[]' value='" + files[index].name + "' id='hidden_image'  /> <button class='delbtnnewsfeedmutliple' ><i class='fa fa-remove'>delete</i> </button></div>");
+            }
+            reader.readAsDataURL(files[index]);
+        })(i);
+    }
+});
+});
+
+
+  function deleteImage(imageId) {
+        $(document).on('click', '.delbtnnewsfeedmutliple', function() {
+            var imageId = $(this).data('image-id');
+            deleteImage(imageId);
+         });
+            $.ajax({
+                type: 'POST',
+                url: '/editimg_delete_image/',
+                data: { 'image_id': imageId, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                success: function (data) {
+                    if (data.success) {
+                        $('div[data-image-id="' + imageId + '"]').remove();
+                        $('#del').text("Product removed Successfully");
+                        setTimeout(function() {
+                            $('#del').text("");
+                        }, 1000);
+                        
+                    
+                    } else {
+                        console.log('Error:', data.error_message);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    
+    $(document).on('click', '.delbtnnewsfeedmutliple', function (event) {
+        event.preventDefault();
+
+        var imageId = $(this).closest('.col-md-6').data('image-id');
+        
+        deleteImage(imageId);
+    });
+    $(document).ready(function () {
+      $('#trfimage').on('change', function () {
+          var input = this;
+  
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+  
+              reader.onload = function (e) {
+                  // Update the preview image src attribute
+                  $('#turfimage-preview').attr('src', e.target.result);
+              };
+  
+              reader.readAsDataURL(input.files[0]);
+          }
+      });
+  });
+  $('#advertisement_image').on('change', function () {
+          var input = this;
+  
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+  
+              reader.onload = function (e) {
+                  // Update the preview image src attribute
+                  $('#advertisement-preview').attr('src', e.target.result);
+              };
+  
+              reader.readAsDataURL(input.files[0]);
+          }
+      });
+
+  
+
+function deleteNewlyAddedImage(index) {
+imagesToUpload.splice(index, 1); // Remove the image from the imagesToUpload array
+
+// Remove the image element from the UI
+$('.imgview .imag').eq(index).remove();
+}
+
+$(document).on('click', '.delbtnnewsfeedmutliple', function (event) {
+event.preventDefault();
+
+var index = $(this).closest('.imag').index(); // Get the index of the clicked image
+
+deleteNewlyAddedImage(index);
+});
+</script>
+    
+  <style>
+
+    /* .gradient-custom { */
+/* fallback for old browsers */
+/* background: #f093fb; */
+
+/* Chrome 10-25, Safari 5.1-6 */
+/* background: -webkit-linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1)); */
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/* background: linear-gradient(to bottom right, rgba(240, 147, 251, 1), rgba(245, 87, 108, 1)) */
+/* } */
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+font-size: 1rem;
+line-height: 2.15;
+padding-left: .75em;
+padding-right: .75em;
+}
+.card-registration .select-arrow {
+top: 10px;
+}
+  </style>
+{% endblock %}

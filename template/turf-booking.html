@@ -1,0 +1,293 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+<style>
+    
+    .slot-label.booked {
+        background-color: #e74c3c; /* Background color for already booked slot */
+        color: #fff; /* Text color for already booked slot */
+        cursor: not-allowed; /* Set cursor to not-allowed for already booked slot */
+    }
+    .slot-box {
+        border: 2px solid #3498db;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        display: inline-block;
+        background-color: #fff; /* Background color for slot boxes */
+        transition: background-color 0.3s ease-in-out;
+    }
+    .slot-label {
+        width: calc(20% - 10px); /* 20% width for 5 slots in a row, considering margin */
+        margin: 5px;
+        border: 2px solid #007bff;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: #fff; /* Background color for slot labels */
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+    .slot-label:hover {
+        background-color: #007bff; /* Background color on hover */
+        color: #fff; /* Text color on hover */
+    }
+
+    .slot-input:checked + .slot-label {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    .h-100 {
+        height: auto !important;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }  
+    
+    .slot-box {
+        border: 2px solid #3498db;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    label b {
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .slot-input {
+        display: none;
+    }
+
+    .slot-label {
+        display: inline-block;
+        border: 2px solid #007bff; /* Border color for unselected slots */
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .slot-input:checked + .slot-label {
+        background-color: #007bff; /* Background color for selected slot */
+        color: #fff; /* Text color for selected slot */
+    }
+    .slot-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Adjust as needed */
+    }
+
+    .slot-label {
+        width: calc(20% - 10px); /* 20% width for 5 slots in a row, considering margin */
+        margin: 5px;
+        border: 2px solid #007bff;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .slot-input:checked + .slot-label {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .slot-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Align slots at the start of the container */
+    }
+
+    .slot-label {
+        width: calc(20% - 10px); /* 20% width for 5 slots in a row, considering margin */
+        margin: 5px;
+        border: 2px solid #007bff;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .slot-input:checked + .slot-label {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+</style>
+
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="card shadow-2-strong card-registration" style="border: 2px solid black; border-radius: 10px; width: 97%;">
+                <div class="card-body p-4 p-md-5">
+                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 443px;">Turf Booking </h3>
+                    <form action="" method="post" id="booking-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-outline mb-4">
+                                    <label for="numberofplayers" class="form-label"><b>Number of players:</b></label>
+                                    <select id="numberofplayers" name="numberofplayers" class="form-select form-select-lg" style="border: 2px solid black;" required>
+                                        <option value="" disabled selected>Choose number of players</option>
+                                        <option value="5">5s</option>
+                                        <option value="6">6s</option>
+                                        <option value="7">7s</option>
+                                        <option value="9">9s</option>
+                                        <option value="11">11s</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-outline mb-4">
+                                    <label for="phonenumber"><b>Phone:</b></label>
+                                    <input type="tel" id="phonenumber" name="phonenumber" class="form-control form-control-lg" placeholder="Phone number"  style=" border:2px solid black;" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-outline mb-4">
+                                    <label for="date"><b>Date:</b></label>
+                                    <input type="date" id="date" name="date" class="form-control form-control-lg" placeholder="yy-mm-dd"  style=" border: 2px solid black;" required />
+                                </div>
+                            </div>
+                        </div>
+    
+                    
+                        <div class="row">
+                            <div class="form-outline mb-4">
+                                <label><b>Choose your slots:</b></label>
+                                <div class="slot-container">
+                                    {% for slot in booking %}
+                                        {% if slot.is_booked %}
+                                            <input type="radio" id="slot{{ slot.id }}" class="slot-input" name="slots" value="{{ slot.id }}" disabled />
+                                            <label class="slot-label booked" for="slot{{ slot.id }}">{{ slot.name }}</label>
+                                        {% else %}
+                                            <input type="radio" id="slot{{ slot.id }}" class="slot-input" name="slots" value="{{ slot.id }}" />
+                                            <label class="slot-label" for="slot{{ slot.id }}">{{ slot.name }}</label>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        </div>
+                        <input type="hidden" name="turf_id" id="turf_id" class="turf_id_class" value="{{ turfid }}">
+                        <button type="button" class="btn btn-primary btn-block mb-4" id="booknow" style="width: 100%; background-color:#59ab6e;">Book Now</button>
+                        <div id="booked" style="text-align: center;"></div>
+                        <div id="error-message" style="text-align: center; color: red;"></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+ 
+        $(document).ready(function () {
+            $(document).on('click', '#booknow', function (event) {
+                event.preventDefault();
+    
+                // Reset styles before making the AJAX request
+                $('#phonenumber').css('border-color', '');  // Reset border color
+                $('#error-message').css('color', '');  // Reset error message color
+    
+                // Get values from the form
+                var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+                var numberofplayers = $('#numberofplayers').val();
+                var turf_id = $('#turf_id').val();
+                var date = $('#date').val();
+                var slots = $('input[name="slots"]:checked').val();
+                var phonenumber = $('#phonenumber').val();  // Get the phone number
+    
+                // Create data object for AJAX request
+                var data = {
+                    numberofplayers: numberofplayers,
+                    turf_id: turf_id,
+                    date: date,
+                    slots: slots,
+                    phonenumber: phonenumber,  // Include the phone number in the data object
+                    csrfmiddlewaretoken: csrfToken
+                };
+    
+                // Make AJAX request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/turf_booking_save/',
+                    data: data,
+                    success: function (response) {
+                        console.log(response);
+    
+                        if (response.message) {
+                            $('#booked').text(response.message);
+                            setTimeout(function () {
+                                $('#booked').text("");
+                                window.location.href = '/turf/';
+                            }, 3000);
+                        } else if (response.error) {
+                            $('#error-message').css('color', 'red');  // Apply red color to the error message
+                            $('#error-message').text(response.error);
+                            setTimeout(function () {
+                                $('#error-message').text("");
+                            }, 3000);
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        alert(response.responseJSON.error);
+                    }
+                });
+            });
+    
+            // Apply styles for already booked slots on page load
+            $('.slot-input').each(function() {
+                var slotId = $(this).val();
+                if ($('#slot' + slotId).data('is-booked')) {
+                    $('#slot' + slotId).prop('disabled', true);
+                    $('#slot' + slotId).next('.slot-label').addClass('booked');
+                }
+            });
+        });
+    </script>
+    
+    
+
+
+
+{% endblock %}

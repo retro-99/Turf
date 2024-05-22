@@ -1,0 +1,250 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <title>Turf booking</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="assets/images/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
+    
+    <!--
+    
+TemplateMo 559 Zay Shop
+
+https://templatemo.com/tm-559-zay-shop
+
+-->
+</head>
+<style>
+    .h-100{
+      height: auto !important;
+    }
+    .text-center {
+    text-align: center!important;
+    padding-top: 12px;
+}
+.pb-3 {
+    padding-bottom: 1rem!important;
+    padding-top: 40px;
+}
+
+        
+  </style>
+
+<body>
+    
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <i class="fa fa-envelope mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">Athlex@company.com</a>
+                    <i class="fa fa-phone mx-2"></i>
+                    <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">8943590472</a>
+                </div>
+                <div>
+                    <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i class="fa fa-facebook fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter fa-sm fa-fw me-2"></i></a>
+                    <a class="text-light" href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin fa-sm fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <a class="navbar-brand text-success logo h1 align-self-center" href="{% url 'index' %}">
+            <h1 style="color: black; margin-bottom: -10;"><img src="{% static 'images/turflogo14.png' %}" alt="New Logo" class="img-fluid" style="width:200px;height:80px;margin-left:40px;"> <!-- Add this line --></h1>
+        </a>
+        <div class="container d-flex justify-content-between align-items-center">
+           
+
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}"><b>Home</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}"><b>About</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'turf' %}"><b>Turf</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}"><b>Contact</b></a>
+                        </li>
+                        
+                        
+                        
+                        {% if not request.user.is_authenticated or request.user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user_register' %}"><b>Register</b></a>
+                        </li>
+						{% endif %}
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login_page' %}">Login</a>
+                        </li> -->
+                        
+                        {% if request.user.is_authenticated and not request.user.is_superuser %}
+                        <li class="nav-item">
+                        <a class="nav-icon position-relative text-decoration-none" href="{% url 'myprofile' %}">
+                            <i class="fa fa-fw fa-user text-dark mr-3" style="padding-top: 12px;"></i>
+                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"></span>
+                        </a>
+                    </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login_page' %}"><b>Login</b></a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>  </div>
+                
+               
+                    <!-- <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                    </a> -->
+                   
+              
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+
+
+    
+{% block body_block %}
+{% endblock %}
+
+    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+  </svg></a>
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+            
+                 
+                
+                <div class="col-md-6">
+                    <h1 class="h2 text-success border-bottom pb-3 border-light logo"><img src="{% static 'images/turflo12.png' %}" alt="New Logo" class="img-fluid" style="width:250px;height:100px;"></h1>
+                    <h1 style="height: fit-content;color: darkgray;">Ignite Your Inner Athlete</h1>
+
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fa fa-map-marker fa-fw"></i>
+                            Poopalam , Perinthalmanna , malappuram ,kerala
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">89435 90472 ,9567 763360 ,96565 53407 ,81568 56060</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">Athlex@company.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-md-6">
+                    <br><br><br><br><br><br>
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}"><b>Home</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}"><b>About</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'turf' %}"><b>Turf</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}"><b>Contact</b></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item ">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fa fa-facebook fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item ">
+                            <a class="text-light " target="_blank" href="https://www.instagram.com/"><i class="fa fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item ">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item ">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fa fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+              <!-- <div class="col-md-4">
+                        <a class="webwhatsapp" href="https://web.whatsapp.com/send?phone=8891955095&amp;texttext=www.google.com" target="_blank">
+                            <img src="/static/images/whatsapp.png" style="position: fixed; height: 80px;top: 80%;left: 90%;right: 0;">
+                        </a> 
+                    </div> -->
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Powered by Mdigitz Soft Solutions
+                           
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Start Script -->
+    <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/templatemo.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <!-- End Script -->
+</body>
+
+</html>

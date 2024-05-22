@@ -1,0 +1,166 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+<style>
+    
+    .h-100 {
+      height: auto !important;
+    }
+  
+    .nav-pills .nav-link.active {
+      color: #fff;
+      background-color: #59ab6e;
+    }
+  
+    .nav-link {
+      color: #fff;
+      margin-bottom: 10px;
+    }
+  
+    .background {
+      background-color: #59ab6e;
+    }
+  
+    .profile-section {
+      margin-left: 20px;
+      padding-top: 30px;
+    }
+  
+    .profile-heading {
+      margin-left: 400px;
+      font-size: 24px;
+    }
+  
+    .edit-button {
+      margin-left: 700px;
+      margin-top: 10px;
+    }
+  
+    .profile-image img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px solid white;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+  
+  
+    .personal-info {
+      margin-top: 20px;
+    }
+  
+    .info-item {
+      font-size: 18px; /* Adjusted font size */
+      margin-bottom: 15px; /* Increased margin bottom for spacing */
+    }
+  
+    .profile-details {
+      margin-left: 50px;
+    }
+  
+    .gradient-custom {
+      background: #70706d;
+      height: 394px;
+    }
+  
+    /* Add a margin-right to create space between labels and information */
+    .col-6 h6 {
+      margin-right: 10px;
+    }
+    .custom-border {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      
+    }
+    
+
+</style>
+
+<div class="row" style="margin-left: 20px;">
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+            {% if roll == 'owner' %}
+                <a class="nav-link background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                    Turf Creation
+                </a>
+               
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Turf Listing
+                </a>
+              
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'feedback_notification' user_id=log_det1.id %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Feedback
+                </a>
+            {% endif %}
+      
+            <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'user_notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                Booking details
+            </a>
+    
+            <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                Change Password
+            </a>
+            <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="{% url 'logout' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                Logout
+            </a>
+            
+        </div>
+    </div>
+
+
+    <div class="col-9" >
+      <section class=" gradient-custom" style="background-color:white;">
+          <div class="container py-5 h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col col-lg-10 mb-4 mb-lg-0" >
+                      <div class="card mb-3" style="border-radius:.5rem;height:400px;border: 3px solid black;">
+                          <div class="row g-0">
+                              <div class="col-md-4 gradient-custom text-center text-white">
+                                  {% if log_det2.img %}
+  
+                                  <img src="{{ log_det2.img.url }}" alt="Profile Picture" style="border-radius: 50%; width: 60%; height: 50%;margin-top:20px;border: 3px solid white;">
+                                  {% else %}
+                                  <img src="{% static 'images/simple.jpg' %}" style="border-radius: 0px; width: 20%;" alt>
+                                  {% endif %}
+                                  <h5 style="margin-top:40px;">{{ log_det1.username }}</h5>
+                                  <h5>{{ log_det1.email }}</h5>
+  
+                               
+                              </div>
+                              
+                              <div class="col-md-8">
+                                  <div class="card-body p-8 ">
+                                      <h2>Information</h2>
+                                      <hr class="mt-0 mb-4">
+                                      <div class="row pt-1 custom-border">
+                                          <div class="col-12 mb-3">
+                                            <p class="font-italic mb-2"><b>Name:</b> {{log_det2.name}}</p>
+                                            <p class="font-italic mb-2"><b>Address:</b>{{ log_det2.address }}</h6>
+                                              <p class="font-italic mb-2"><b>District:</b>{{ log_det2.district }}</h6>
+                                              <p class="font-italic mb-2"><b>Country:</b>{{ log_det2.country }}</h6>
+                                              
+                                          </div>
+                                          
+                                      </div>
+                                  </div>
+                                  <a href="{% url 'edit' %}">
+                                    <input type="button" class="btn btn-success" value="Edit" style="margin-left: 40px; width:100px; font-size:16px;">
+                                </a>
+                              </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  </div>
+  <br><br><br>
+{% endblock %}

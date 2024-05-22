@@ -1,0 +1,343 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+<style>
+    .overall-rating {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .stars {
+        font-size: 18px;
+        color: #ffcc00;
+    }
+
+    .user-count {
+        font-size: 14px;
+        color: #555;
+        margin-left: 5px;
+    }
+
+    /* User Count Styles */
+    .user-count {
+        font-size: 16px; /* Increase font size */
+        color: #555; /* Darker gray color for user count */
+        margin-left: 8px; /* Add some space between stars and user count */
+    }
+    
+    .star {
+        font-size: 30px; /* Adjust the font size to increase the width of the star */
+        color: #ffcc00;
+    }
+
+    .card {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Add this style for a subtle hover effect on cards */
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Add this style for fading in the cards */
+    .fade-in {
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+    }
+
+    /* Keyframes for fading in */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header Styles */
+    #templatemo_search {
+        background-color: #ffffff;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        border: 2px solid #140f0f; /* Increased border thickness for the modal content */
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Increased shadow intensity */
+    }
+
+    .input-group-text {
+        background-color: #198754;
+        color: #fff;
+        border: none;
+        border-radius: 0 15px 15px 0;
+    }
+    .overall-rating {
+        margin-top: 10px;
+    }
+    /* ... (your existing styles) ... */
+
+    /* Categories Styles */
+    .categories-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .category-item {
+        flex: 0 0 33.33%;
+        padding: 15px;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+        border: 2px solid #0a0a0a; /* Increased border thickness for category items */
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        
+    }
+
+    .category-item:hover {
+        transform: scale(1.05);
+    }
+
+    .square-image {
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .square-image:hover {
+        transform: scale(1.1);
+    }
+
+    /* Featured Product Styles */
+    .bg-light {
+        background-color: #f8f9fa;
+    }
+
+ 
+</style>
+
+ <!-- Modal -->
+ <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="w-100 pt-1 mb-5 text-right">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="get" class="modal-content modal-body border-0 p-0">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                <button type="submit" class="input-group-text bg-success text-light">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Start Banner Hero -->
+
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <ol class="carousel-indicators">
+        {% for obj in slider %}
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}"></li>
+        <!-- <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li> -->
+        {% endfor %}
+    </ol>
+    <div class="carousel-inner">
+        {% for obj in slider %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="{{obj.img.url}}" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success"><b>{{obj.title}}</b></h1>
+                            <h3 class="h2">{{obj.sub_title}}</h3>
+                            <p>
+                                {{obj.description}} 
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+        {% endfor %}
+    </div>
+
+    <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+        <i class="fa fa-chevron-left"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+        <i class="fa fa-chevron-right"></i>
+    </a>
+   
+</div>
+
+<!-- End Banner Hero -->
+
+
+<!-- Start Categories of The Month -->
+<section class="container py-5">
+    {% for obj in Categories_home_page %}
+    <div class="row text-center pt-3" style="margin-top: -50px;">
+        <div class="col-lg-6 m-auto" >
+            <h1 class="h1"><b>{{obj.title}}</b></h1>
+            
+        </div>
+    </div>
+    <div class="row">
+        {% for obj in categories %}
+        <div class="col-12 col-md-4 p-2 mt-2">
+            <a href="{% url 'display_category' category_id=obj.id %}">
+                <img src="{{obj.img.url}}" class="square-image img-fluid border" style="width:400;height: 260px;">
+            </a>
+            <h5 class="text-center mt-3 mb-3" style="margin-right: 50px;">{{obj.name}}</h5>
+        </div>
+        {% endfor %}
+    </div>
+    
+    
+    {% endfor %}
+</section>
+<!-- End Categories of The Month -->
+
+
+<!-- Start Featured Product -->
+
+      <!-- Start Featured Product -->
+<!-- Start Featured Product -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3" style="margin-top: -60px;">
+            {% for obj in Featured_Product %}
+                <div class="col-lg-6 m-auto">
+                    <h2><b>Turfs</b></h2>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            {% for turf in featured_product|slice:'8' %}
+            <div class="col-12 col-md-3 mb-4">
+                <div class="card h-100" style="border: 2px solid black;border-radius: 10px;">
+                        <a href="{% url 'turf_singlepage' turf.id %}">
+                            {% if turf.img %}
+                                <img src="{{ turf.img.url }}" class="card-img-top" alt="..." style="width: 100%; height: 210px;"></a>
+                            {% else %}
+                          
+                                <p>No image available</p>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 style="font-size:16px;margin-left:70px;">{{ turf.name }}</h5>
+                                <h5 style="font-size:16px;margin-left:60px;">{{ turf.location }}</h5>
+                                <div class="overall-rating"  data-turf-id="{{ turf.id }}" style="margin-right:40px;"></div>
+                                {% if roll == 'owner' or roll == 'user' %}
+
+                                <a href="{% url 'feedback' turf.id %}">
+                                    <input type="button" class="btn btn-primary btn-block mb-4 feedback-button" id="feedback" value="Feedback" style="width:100px ;margin-left:20px;" >
+                                </a>
+                                
+                                <a href="{% url 'turf_booking' turf.id %}">
+                                    <input type="button" class="btn btn-primary btn-block mb-4" id="booking" value="Book Now" style="background-color: #59ab6e; border-color: #56ae6c; ">
+                                </a>
+                               {% endif %}
+
+                            </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <a href="{% url 'turf' %}">
+                <button class="btn btn-info" style="margin-left: 1100px; background-color: #7fad39; color: white;">View More</button>
+            </a>
+        </div>
+        <div id="additional-content"></div>
+    </div>
+</section>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    function updateRatingsForSearchResults() {
+        $('.turf_search_list .overall-rating').each(function () {
+            var turfId = $(this).data('turf-id');
+            updateOverallRating(turfId);
+        });
+    }
+
+    // Add this function to fetch and update overall rating and user count
+    function updateOverallRating(turfId) {
+        $.ajax({
+            type: 'GET',
+            url: '/get_overall_rating/',
+            data: {
+                'turfId': turfId,
+            },
+            success: function (data) {
+                // Convert rating to stars HTML
+                var starsHtml = getStarsHtml(data.overallRating);
+    
+                // Display the stars
+                $('.overall-rating[data-turf-id="' + turfId + '"]').html('<div class="stars">' + starsHtml + '</div>');
+
+                // Display the user count in green color
+                var userCountHtml = '<div class="user-count" style="color: red; font-size:1px;">' + data.userCount + ' users</div>';
+                $('.overall-rating[data-turf-id="' + turfId + '"]').append(userCountHtml);
+            },
+            error: function (error) {
+                console.log('Error fetching overall rating:', error);
+            }
+        });
+    }
+    
+
+    // Add this function to convert rating to stars HTML
+    function getStarsHtml(rating) {
+        var starsHtml = '';
+        var roundedRating = Math.round(rating);
+        for (var i = 0; i < 5; i++) {
+            if (i < roundedRating) {
+                starsHtml += '<span class="star active" style="color: #ffcc00;">&#9733;</span>'; // Yellow color for filled star
+            } else {
+                starsHtml += '<span class="star" style="color: #ffcc00;">&#9734;</span>'; // Yellow color for empty star
+            }
+        }
+        return starsHtml;
+    }
+
+    // Call the function to update the overall rating for each turf
+    $('.overall-rating').each(function () {
+        var turfId = $(this).data('turf-id');
+        updateOverallRating(turfId);
+    });
+
+
+</script>
+
+
+<!-- End Slider Script -->
+
+{% endblock %}
+    
+
+

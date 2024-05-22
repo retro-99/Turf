@@ -1,0 +1,164 @@
+
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+<style>
+    .star {
+        font-size: 40px; /* Adjust the font size to increase the width of the star */
+        color: #ffcc00;
+    }
+
+    .h-100{
+      height: auto !important;
+    }
+  
+   .nav-pills .nav-link.active {
+      color: #fff;
+      background-color: #0b831f;
+  }
+  .nav-link{
+    color: #fff;
+    /* background-color: #13c030; */
+  
+    margin-bottom: 10px;
+  }
+  .background{
+    background-color: #59ab6e;
+  }
+  .pad-cls{
+    padding-left: 10px;
+    padding-right: 20px;
+  }
+  .feed-des{
+  text-align: justify;
+  }
+  .profile-section-container {
+      border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 96%;
+    margin-left: 20px;
+        
+    }
+	.turfname
+	{
+	padding-top: 10px;
+    padding-bottom: 10px;
+	 padding-left: 10px;
+	}
+	.color-col{
+	background: #b3b0b0;
+	}
+  </style>
+
+<!-- <div class="tabs-verical m-5"> -->
+    <div class="row" style="margin-left: 20px;">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+                <a class="nav-link background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+                    Turf Creation
+                </a>
+                <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                    Turf Listing
+                </a>
+               
+              
+            <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'feedback_notification' user_id=user.id %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+                Feedback
+            </a>
+                <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+                    Change Password
+                </a>
+                <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="{% url 'logout' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+                    Logout
+                </a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="profile-section-container">
+    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 350px; padding-top: 30px;">Feedbacks </h3> 
+   
+        
+        
+       {% for turf, feedbacks in turf_feedbacks.items %}
+	    <div class="col-md-12 color-col">
+                 <h4 class="turfname">{{ turf.name }}</h4> 
+            </div>
+    <div class="pad-cls" >
+      <div class="row">
+            
+            <div class="col-md-3">
+                <h6>User Name</h6>
+            </div>
+            <div class="col-md-3">
+                <h6>Email</h6>
+            </div>
+            <div class="col-md-6">
+                <h6>Feedback</h6>
+            </div>
+        </div>
+    {% for feedback in feedbacks %}
+	    
+        <div class="row">
+            <div class="col-md-3">
+                {{ feedback.name }}
+            </div>
+            <div class="col-md-3">
+                {{ feedback.email }}
+            </div>
+            <div class="col-md-6 feed-des">
+                {{ feedback.feedback }}
+            </div>
+        </div><hr>
+    {% endfor %}
+	</div>
+{% endfor %}
+        
+</form>   
+
+
+</div>
+</div>
+</div>
+</div>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#cancel-booking-btn").click(function (event) {
+            event.preventDefault();
+            var bookingId = $(this).attr("data-booking-id");
+            //var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+            // console.log("Booking ID:", bookingId);
+            // console.log("csrfToken", csrfToken);
+            
+            alert(bookingId)
+            alert(csrfToken)
+            var data = {
+                  bookingId : bookingId,
+                  csrfmiddlewaretoken: csrfToken
+                };
+            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: '/cancel_booking/',  // Use 0 as a placeholder, the actual URL will be set in the JavaScript code
+                data: data,
+                success: function (response) {
+                    // Handle success, e.g., remove the canceled booking from the UI
+                    alert("Booking cancelled successfully.");
+                },
+                error: function (error) {
+                    // Handle errors
+                    alert("Failed to cancel the booking " );
+                }
+            });
+        });
+    });
+</script> -->
+
+
+
+{% endblock %}        

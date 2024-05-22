@@ -1,0 +1,402 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+<style>
+    
+        /* Your existing styles here */
+    
+        .overall-rating {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    
+        .stars {
+            font-size: 18px;
+            color: #ffcc00;
+        }
+    
+        .user-count {
+            font-size: 14px;
+            color: #555;
+            margin-left: 5px;
+        }   .star {
+            font-size: 30px; /* Adjust the font size to increase the width of the star */
+            color: #ffcc00;
+        }
+    
+        .user-count {
+            font-size: 16px; /* Increase font size */
+            color: #555; /* Darker gray color for user count */
+            /* Remove margin-left property */
+        }
+  
+.card {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Add this style for a subtle hover effect on cards */
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Add this style for fading in the cards */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+/* Keyframes for fading in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styles */
+#templatemo_search {
+    background-color: #ffffff;
+}
+
+/* Modal Styles */
+.modal-content {
+    border: 2px solid #140f0f; /* Increased border thickness for the modal content */
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Increased shadow intensity */
+}
+
+.input-group-text {
+    background-color: #198754;
+    color: #fff;
+    border: none;
+    border-radius: 0 15px 15px 0;
+}
+</style>
+
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Open Content -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+              
+                    
+                    <div class="card mb-3" style="border: 3px solid #140f0f;">
+                        <img class="card-img img-fluid" src="{{turf.img.url}}" alt="{{ image.img.name }}" id="product-detail">
+
+                    </div>
+                    <div class="row">
+                        <!--Start Controls-->
+                        <div class="col-1 align-self-center" >
+                            <a href="#multi-item-example" role="button" data-bs-slide="prev">
+                                <i class="text-dark fa fa-chevron-left"></i>
+                                <!-- <span class="sr-only">Previous</span> -->
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                        <!--Start Carousel Wrapper-->
+                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                            <!--Start Slides-->
+                            <div class="carousel-inner product-links-wap" role="listbox">
+
+                                <!-- First slide
+                                {% for image in multi_image %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="row">
+                                        
+                                        <div class="col-4">
+                                            
+                                            <a href="#">
+                                                
+                                                <img class="card-img img-fluid" src="{{image.img.url}}" alt="Product Image {{ forloop.counter }}" style="width: 100%; height: 125px;">
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="#">
+                                                <img class="card-img img-fluid" src="{{image.img.url}}" alt="Product Image 5" style="width: 100%; height: 125px;">
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="#">
+                                                <img class="card-img img-fluid" src="{{image.img.url}}" alt="Product Image 6" style="width: 100%; height: 125px;">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %} -->
+                                <div class="carousel">
+                                    {% for image in multi_image %}
+                                        {% if forloop.counter0|divisibleby:3 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <a href="#">
+                                                            <img class="card-img img-fluid" src="{{ image.img.url }}" alt="Product Image {{ forloop.counter }}" style="width: 100%; height: 125px;">
+                                                        </a>
+                                                    </div>
+                                        {% endif %}
+                                        {% if not forloop.counter0|divisibleby:3 %}
+                                                    <div class="col-4">
+                                                        <a href="#">
+                                                            <img class="card-img img-fluid" src="{{ image.img.url }}" alt="Product Image {{ forloop.counter }}" style="width: 100%; height: 125px;">
+                                                        </a>
+                                                    </div>
+                                        {% endif %}
+                                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                
+                                <!--/.First slide-->
+
+                                
+                            </div>
+                            <!--End Slides-->
+                        </div>
+                        <!--End Carousel Wrapper-->
+                        <!--Start Controls-->
+                        <div class="col-1 align-self-center">
+                            <a href="#multi-item-example" role="button" data-bs-slide="next">
+                                <i class="text-dark fa fa-chevron-right"></i>
+                                <!-- <span class="sr-only">Next</span> -->
+                            </a>
+                        </div>
+                        <!--End Controls-->
+                    </div>
+                    
+                </div>
+                <!-- col end -->
+                <div class="col-lg-7 mt-4">
+                    <div class="card" >
+                        <div class="card-body" style="border: 2px solid #140f0f;">
+                            <h1 class="h2"><b>{{turf.name}}</b></h1>
+                            <p class="h3 py-2"><b>₹{{turf.amount}}</b></p>
+
+                            <h6>Description:</h6>
+                            <p><b>{{turf.description}}</b></p>
+                            <div class="overall-rating" data-turf-id="{{ turf.id }}" style="margin-right: 500px;"></div>
+
+                            <form action="" method="GET">
+                                {% csrf_token %}
+                                <input type="hidden" name="product-title" value="Activewear">
+                                <div class="row pb-3">
+                                    <div class="col d-grid">
+                                        {% if user.is_authenticated %}
+                                            <div class="btn-group" role="group">
+                                                {% if roll == 'owner' or roll == 'user' %}
+
+                                                <a href="{% url 'saverating' turf.id %}">
+                                                    <input type="button" class="btn btn-primary mb-4" id="rating" value="Rate now" style="background-color: red; border-color: red; width:350px;">
+                                                </a>
+                                
+                                                <a href="{% url 'feedback' turf.id %}">
+                                                    <input type="button" class="btn btn-primary feedback-button" id="feedback" value="Feedback"  style="width:330px;margin-left:10px;" >
+                                                </a>
+                                            </div>
+                                            <a href="{% url 'turf_booking' turf.id %}">
+                                                <input type="button" class="btn btn-primary mb-4" id="booking" value="Book Now" style="background-color: #59ab6e; border-color:#59ab6e; border-color: #56ae6c; width: 100%; ">
+                                                </a>
+                                            
+                                        {% endif %}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                                
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Content -->
+
+    <!-- Start Article -->
+   <!-- Start Featured Product -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3" style="margin-top: -60px;">
+            <div class="row text-left p-2 pb-3">
+                <h1 >Related Turf</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for obj in related_turf %}
+            <div class="col-12 col-md-3 mb-4">
+                <div class="card h-100" style="border: 2px solid #140f0f;">
+                        <a href="{% url 'turf_singlepage' obj.id %}">
+                            {% if obj.img %}
+                                <img src="{{ obj.img.url }}" class="card-img-top" alt="..." style="width: 100%; height: 210px;"></a>
+                            {% else %}
+                          
+                                <p>No image available</p>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 style="font-size:16px;margin-left:70px;">{{ obj.name }}</h5>
+                                <h5 style="font-size:16px;margin-left:60px;">{{ obj.location }}</h5>
+                                <div class="overall-rating" data-turf-id="{{ obj.id }}" style="margin-right:40px;"></div>
+                                {% if roll == 'owner' or roll == 'user' %}
+
+                                <a href="{% url 'feedback' obj.id %}">
+                                    <input type="button" class="btn btn-primary btn-block mb-4 feedback-button" id="feedback" value="Feedback" style="width: 100px; margin-left: 20px;">
+                                </a>
+                                
+                                <a href="{% url 'turf_booking' obj.id %}">
+                                    <input type="button" class="btn btn-primary btn-block mb-4" id="booking" value="Book Now" style="background-color: #59ab6e; border-color: #56ae6c; ">
+                                </a>
+                               
+                                {% endif %}
+
+                            </div>
+                    </div>
+                </div>
+            {% endfor %}
+        
+        </div>
+        <div id="additional-content"></div>
+    </div>
+</section>
+    <!-- End Article -->
+
+    
+    <!-- End Script -->
+
+    <!-- Start Slider Script -->
+    {% if turf.advertisement_image %}
+    <h1 style="text-align: center;">Advertisement</h1>
+    <div class="row" >
+       
+    <img src="{{turf.advertisement_image.url}}" name="advertisement" style="width: 100%;height: 700px; padding-left: 20px;padding-bottom: 15px;padding-right: 20px;">
+       
+    </div> 
+    {% endif %}
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script>
+        $('#carousel-related-product').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                }
+            ]
+        });
+       // Add this function to update the overall rating for each turf in the search results
+    function updateRatingsForSearchResults() {
+        $('.turf_search_list .overall-rating').each(function () {
+            var turfId = $(this).data('turf-id');
+            updateOverallRating(turfId);
+        });
+    }
+
+    // Add this function to fetch and update overall rating and user count
+    function updateOverallRating(turfId) {
+        $.ajax({
+            type: 'GET',
+            url: '/get_overall_rating/',
+            data: {
+                'turfId': turfId,
+            },
+            success: function (data) {
+                // Convert rating to stars HTML
+                var starsHtml = getStarsHtml(data.overallRating);
+    
+                // Display the stars
+                $('.overall-rating[data-turf-id="' + turfId + '"]').html('<div class="stars">' + starsHtml + '</div>');
+
+                // Display the user count in green color
+                var userCountHtml = '<div class="user-count" style="color: red; font-size:5px;">' + data.userCount + ' users</div>';
+                $('.overall-rating[data-turf-id="' + turfId + '"]').append(userCountHtml);
+            },
+            error: function (error) {
+                console.log('Error fetching overall rating:', error);
+            }
+        });
+    }
+    
+
+    // Add this function to convert rating to stars HTML
+    function getStarsHtml(rating) {
+        var starsHtml = '';
+        var roundedRating = Math.round(rating);
+        for (var i = 0; i < 5; i++) {
+            if (i < roundedRating) {
+                starsHtml += '<span class="star active" style="color: #ffcc00;">&#9733;</span>'; // Yellow color for filled star
+            } else {
+                starsHtml += '<span class="star" style="color: #ffcc00;">&#9734;</span>'; // Yellow color for empty star
+            }
+        }
+        return starsHtml;
+    }
+
+    // Call the function to update the overall rating for each turf
+    $('.overall-rating').each(function () {
+        var turfId = $(this).data('turf-id');
+        updateOverallRating(turfId);
+    });
+</script>
+
+    <!-- End Slider Script -->
+
+    {% endblock %}

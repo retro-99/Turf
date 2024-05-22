@@ -1,0 +1,204 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+<style>
+    #feedbackform {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 0.5px;
+        margin-top: 40px;
+    }
+    body {
+        font-family: 'Roboto', sans-serif; /* Example: Choose a modern font */
+        background-color: #f8f9fa; /* Example: Use a light background color */
+    }
+
+    #feedbackform {
+        border: 2px solid #3498db; /* Example: Use a contrasting border color */
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 40px;
+        background-color: #ffffff; /* Example: White background */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Example: Add a subtle box shadow */
+        width:70%;
+    }
+
+    h3 {
+        color: #3498db; /* Example: Use a color that complements your overall scheme */
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    #submit {
+        background-color: #28a745; /* Example: Use a success color for the submit button */
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    #submit:hover {
+        background-color: #218838; /* Example: Darker shade on hover */
+    }
+
+    #existing-feedback {
+        border: 2px solid #3498db;
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 30px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f0f8ff;
+    }
+    
+    .feedback-container {
+        border: 2px solid #3498db;
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 30px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f0f8ff;
+    }
+    
+    .feedback-title {
+        color: #3498db;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .feedback-entry {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .feedback-text {
+        color: #333;
+        font-size: 16px;
+    }
+    .feedback-entry:hover {
+        background-color: #ecf0f1; /* Add a light background color on hover */
+    }
+    body {
+        font-family: 'Roboto', sans-serif; /* Example Google Font */
+    }
+    
+    .feedback-text {
+        line-height: 1.6;
+    }
+    .feedback-container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    
+    .feedback-entry {
+        margin-bottom: 20px;
+    }
+    .feedback-container {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+                
+
+</style>
+
+
+<div class="container py-5" id="feedbackform">
+    <!-- <div class="row py-5"> -->
+        <h3 style="text-align: center; padding-bottom: 50px;">Feedback</h3>
+        <form class="col-md-9 m-auto" id="feedback-form" method="post" role="form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="inputname" style="color: #000;">Name:</label>
+                    <input type="text" class="form-control mt-1 name" id="name" name="name" placeholder="Name" style="border: 3px solid #000;">
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="inputemail" style="color: #000;">Email:</label>
+                    <input type="email" class="form-control mt-1 email" id="email" name="email" placeholder="Email" style="border: 3px solid #000;">
+                </div>
+            </div>
+           
+            <div class="mb-3">
+                <label for="inputmessage" style="color: #000;">Feedback:</label>
+                <textarea class="form-control mt-1 feedback" id="feedback" name="feedback" placeholder="Enter your feedback" rows="8" style="border: 3px solid #000;"></textarea>
+            </div>
+            <input type="hidden" name="turf_id" class="turf_id" value="{{ turf_id }}">
+            <div class="row">
+                <div class="col text-end mt-2">
+                    <input type="button" class="btn btn-primary btn-block mb-4" id="submit" name="submit" value="Submit" style="width: 100%;">
+                </div>
+            </div>
+            <div id="feedback-messages" class="mt-3">
+                <!-- Div to hold success and error messages -->
+                <div id="success-message" class="text-success" style="color: green; font-size: 20px; padding-left: 60px; font-weight: bold;"></div>
+                <div id="error-message" class="text-danger"></div>
+            </div>
+        </form>
+        
+    </div>
+<div id="existing-feedback" class="feedback-container">
+    <h4 class="feedback-title">Existing Feedback:</h4>
+    {% for feedback_entry in feedback_entries %}
+        <div class="feedback-entry">
+            <p class="feedback-text">
+                <strong>{{ feedback_entry.name }}:</strong><br>
+                {{ feedback_entry.feedback }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
+
+  
+<!-- End Contact -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+      $('#feedback-form').on('click','#submit' , function(event) {
+          event.preventDefault();
+          var csrfToken = $('[name=csrfmiddlewaretoken]').val();         
+          var name = $('.name').val();
+          var email = $('.email').val();
+          var feedback = $('.feedback').val();
+          var turf_id = $('.turf_id').val();
+        //   console.log('Name:', name);
+        //   console.log('Email:', email);
+        //   console.log('feedback:', feedback);
+          var data = {
+                name: name,
+                email: email,
+                feedback: feedback,
+                turf_id:turf_id,
+                csrfmiddlewaretoken: csrfToken
+                };  
+         console.log(data);
+          $.ajax({
+              type: 'POST',
+              url: '/feedback/' + turf_id + '/',
+              data: data,
+              success: function(response) {
+                $('#success-message').text(response.message);
+                window.location.href = '/';
+
+              },
+              error: function(response) {
+                $('#error-message').text(response.responseJSON.error); // Log the error response to the console
+           
+              }
+          });
+      });
+  });
+
+  </script>
+  
+
+{% endblock %}

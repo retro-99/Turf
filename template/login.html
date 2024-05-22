@@ -1,0 +1,130 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+<style>
+    .h-100 {
+        height: auto !important;
+    }
+.gradient-custom {
+    background: url('path/to/your/background-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+    #form {
+        border: 2px solid black; /* Blue */
+        border-radius: 15px; /* Increased border-radius for smoother edges */
+        width: 87%;
+        padding: 0px;
+        margin: auto; /* Center horizontally */
+        margin-top: 10px; /* Adjust the value as needed for vertical centering */
+    }
+
+
+    .card-registration {
+        /* Add your card styles here */
+        box-shadow: 0 8px 16px rgba(31, 15, 15, 0.2); /* Increased box-shadow for a smoother look */
+        background-color: #ffffff; /* Blue */
+        transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow */
+    }
+
+    .card-registration:hover {
+        box-shadow: 0 12px 24px rgba(31, 15, 15, 0.3); /* Box-shadow on hover for a subtle lift effect */
+    }
+
+    .mb-md-5 {
+        margin-bottom: 5rem;
+    }
+
+    #error-message {
+        text-align: center;
+        font-size: larger;
+        color: rgb(4, 61, 4);
+    }
+</style>
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+
+            <div class="card shadow-2-strong card-registration" id="form">
+                <div class="card-body p-4 p-md-5">
+                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 font-weight-bold" style="margin-left: 400px;">Login</h3>
+                    <form method="post" id="login_id">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="userName" name="username"
+                                        class="form-control form-control-lg" placeholder="User Name" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="row">
+                            <div class="form-outline mb-4">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    placeholder="Password" />
+                            </div>
+                        </div>
+
+                        <!-- Submit button with animation -->
+                        <button type="submit" class="btn btn-primary btn-block mb-4 animated" style="width: 100%;" onclick="this.classList.add('animate__animated', 'animate__rubberBand');">LOGIN</button><br>
+
+                        <!-- Register buttons -->
+                        <div class="text-center">
+                            <p style="text-align:center; color: black;">Don't have an account? <a href="{% url 'user_register' %}" style="color: blue;">Register</a></p>
+                            <div id="error-message"><b></b></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js"></script> <!-- Add Animate.css for animations -->
+<script>
+    $('#login_id').on('submit', function (event) {
+        event.preventDefault();
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '/success_login/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.redirect || '/default-redirect-path';
+                } else {
+                    console.log(response.message);
+                }
+                var errorMessages = response.message;
+                $('#error-message').text(errorMessages);
+                $('#login_id')[0].reset();
+                setTimeout(function () {
+                    $('#error-message').text("");
+                }, 3000);
+            },
+            error: function (response) {
+                console.log(response);
+                var errorMessage = response.responseJSON.error;
+                $('#error-message').text(errorMessage);
+                $('#login_id')[0].reset();
+                setTimeout(function () {
+                    $('#error-message').text("");
+                }, 3000);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

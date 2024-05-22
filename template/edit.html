@@ -1,0 +1,222 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block body_block %} 
+
+
+
+<style>
+  .h-100{
+    height: auto !important;
+  }
+
+ .nav-pills .nav-link.active {
+    color: #fff;
+    background-color: #59ab6e;
+}
+.nav-link{
+  color: #fff;
+  /* background-color: #13c030; */
+
+  margin-bottom: 10px;
+}
+.background{
+  background-color:  #59ab6e;
+}
+
+
+</style>
+
+<!-- <div class="tabs-verical m-5"> -->
+  <div class="row" style="margin-left: 20px;">
+    <div class="col-3">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 30px;">
+        {% if roll == 'owner' %}
+    <a class="nav-link background py-4" id="v-pills-home-tab" data-toggle="pill" href="{% url 'turf_creation' %}" role="tab" aria-controls="v-pills-home" aria-selected="true" name="v-pills-home-tab">
+        Turf Creation
+    </a>
+
+    <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'turf_list' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+        Turf Listing
+    </a>
+
+    <a class="nav-link background py-4" id="v-pills-feedback-tab" data-toggle="pill" href="{% url 'feedback_notification' user_id=log_det1.id %}" role="tab" aria-controls="v-pills-feedback" aria-selected="false" name="v-pills-feedback-tab">
+        Feedback
+    </a>
+{% endif %}
+
+
+
+  {% if roll == 'user' %}
+  <a class="nav-link background py-4" id="v-pills-profile-tab" data-toggle="pill" href="{% url 'user_notification' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false" name="v-pills-profile-tab">
+      Booking details
+  </a>
+  {% endif %}
+          <a class="nav-link background py-4" id="v-pills-messages-tab" data-toggle="pill" href="{% url 'change_password' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false" name="v-pills-messages-tab">
+              Change Password
+          </a>
+          <a class="nav-link background py-4" id="v-pills-settings-tab" data-toggle="pill" href="{% url 'logout' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false" name="v-pills-settings-tab">
+              Logout
+          </a>
+      </div>
+  </div>
+<!-- <section class="container"> -->
+  <!-- <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7"> -->
+        <!-- <div class="card shadow-2-strong card-registration" style="border-radius: 0px;"> -->
+          <!-- <div class="card-body p-4 p-md-5"> -->
+            <!-- <h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 170px;">Edit Profile</h3> -->
+            <!-- <form action="" method="post" action="{% url 'edit_save' %}" enctype="multipart/form-data" id="edit-form">
+              {% csrf_token %} -->
+
+
+<div class="col-9">
+  <form method="post" action="{% url 'edit_save' %}" enctype="multipart/form-data" id="edit-form" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin-top: 20px; width: 95%;margin-left: 40px;">
+    {% csrf_token %}
+
+  <!-- <div class="tab-content" id="v-pills-tabContent"> -->
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+        <!-- <div class="card shadow-2-strong card-registration" style="width: 40%;">
+<div class="card-body p-4 p-md-5">  -->
+<h3 class="mb-4 pb-2 pb-md-0 mb-md-5" style="margin-left: 400px;padding-top: 30px;">Edit Profile </h3>  
+<div class="" style="margin-left: 100px;">
+<div class="row">
+  <!-- <a href="{% url 'myprofile' %}"><input type="button" id="" class="btn btn-success" value="View" style=" width: 9%;margin-left: 700px;"></a> -->
+  <div class="col-md-4">
+    <div class="form-outline mb-4">
+        {% if log_det2.img %}
+            <img id="prdimg" src="{{ log_det2.img.url }}" alt="Profile Picture" style="width: 50%; height: 150px;">
+        {% else %}
+            <img id="prdimg" src="{% static 'images/OIP.jpg' %}" alt="Profile Icon" style="width: 50%; height: 150px;">
+        {% endif %}
+    </div>
+</div>
+
+  </div>
+    <div class="row">
+      <div class="form-outline mb-4">
+       <input id="image" type="file"  name="image" >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+        <div class="form-outline mb-4">
+            <label for="username">Username:</label> 
+            <input type="text" id="userName" name="username" value="{{ log_det1.username }}" class="form-control form-control-lg" placeholder=""/>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+<div class="col-md-12">
+    <div class="form-outline mb-4">
+        <label for="name">Name:</label>
+        <input type="text" id="Name" name="name" value="{{log_det2.name}}" class="form-control form-control-lg" placeholder=""/>
+    </div>
+</div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-outline mb-4">         
+            <label for="email">Email:</label>
+            <input type="email" id="emailAddress" name="email" value="{{log_det1.email}}" class="form-control form-control-lg" placeholder="Email"/>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="form-outline mb-4">
+          <label for="address">Address:</label>
+          <textarea id="address" class="form-control form-control-lg" name="address" rows="4" cols="50" placeholder="" required>{{log_det2.address}}</textarea> 
+      </div>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="form-outline mb-4">
+          <label for="place">Place:</label> 
+          <input type="text" id="place" name="place" value="{{log_det2.place}}" class="form-control form-control-lg" placeholder="Place"/>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+      <div class="form-outline mb-4">
+          <label for="district">District:</label>
+          <input type="text" id="district" name="district" value="{{log_det2.district}}" class="form-control form-control-lg" placeholder="District"/>
+      </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-outline mb-4">
+       <label for="country">Country:</label> 
+      <input type="text" id="country" name="country" value="{{log_det2.country}}" class="form-control form-control-lg" placeholder="Country"/>
+    </div>
+  </div>
+</div>
+<div></div>
+<div class="mt-4 pt-2">                 
+  <input class="btn btn-primary btn-lg" type="submit" id="submit" value="Submit" style="width: 98%;"/>
+</div><br>
+
+</form>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#edit-form').on('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting normally
+            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var formData = new FormData(this);  // Convert form to array
+
+            $.ajax({
+                type: 'POST',
+                url: '/edit_save/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('Success Response:', response);
+
+                    // Check the response for a specific message
+                    if (response.message === 'Username already exists') {
+                        alert('Username already exists. Please choose a different username.');
+                    } else {
+                        // Redirect or perform other actions on success
+                        window.location.href = '{% url "myprofile" %}';
+                    }
+                },
+                error: function(response) {
+                    console.error('Error Response:', response);
+
+                    // Handle other errors if needed
+                    if (response.status === 400) {
+                        // Display the error message if the status code is 400 (Bad Request)
+                        alert(response.responseJSON.message);
+                    } else {
+                        // Handle other types of errors
+                        alert('An error occurred while saving your changes. Please try again.');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
