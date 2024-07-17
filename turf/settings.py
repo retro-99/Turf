@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'turfdata',        # Replace with your database name
         'USER': 'root',       # Replace with your MySQL username
-        'PASSWORD': 'root',   # Replace with your MySQL password
+        'PASSWORD': '12345',   # Replace with your MySQL password
         'HOST': 'localhost',                 # Use 'localhost' for a local MySQL server
         'PORT': '3306',
     }
